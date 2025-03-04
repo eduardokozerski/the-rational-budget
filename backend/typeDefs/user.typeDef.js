@@ -9,7 +9,6 @@ const userTypeDef = `#graphql
     }
 
     type Query {
-        users: [User!]
         authUser: User
         user(userId:ID!): User
     }
@@ -35,6 +34,6 @@ const userTypeDef = `#graphql
     type LogoutResponse {
         message: String!
     }
-`
+`;
 
-export default userTypeDef
+export default userTypeDef;
