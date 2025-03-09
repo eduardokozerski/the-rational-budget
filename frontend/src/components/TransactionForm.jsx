@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 const TransactionForm = () => {
   // TODO => WHEN RELATIONSHIPS ARE ADDED, CHANGE THE REFETCH QUERY
   const [createTransaction, { loading }] = useMutation(CREATE_TRANSACTION, {
-    refetchQueries: ["GetTransactions"],
+    refetchQueries: ["GetTransactions", "GetTransactionStatistics"],
   });
 
   const handleSubmit = async (e) => {
@@ -36,7 +36,6 @@ const TransactionForm = () => {
       className="w-full max-w-lg flex flex-col gap-5 px-3"
       onSubmit={handleSubmit}
     >
-      {/* TRANSACTION */}
       <div className="flex flex-wrap">
         <div className="w-full">
           <label
@@ -55,7 +54,7 @@ const TransactionForm = () => {
           />
         </div>
       </div>
-      {/* PAYMENT TYPE */}
+
       <div className="flex flex-wrap gap-3">
         <div className="w-full flex-1 mb-6 md:mb-0">
           <label
@@ -85,7 +84,6 @@ const TransactionForm = () => {
           </div>
         </div>
 
-        {/* CATEGORY */}
         <div className="w-full flex-1 mb-6 md:mb-0">
           <label
             className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
@@ -115,7 +113,6 @@ const TransactionForm = () => {
           </div>
         </div>
 
-        {/* AMOUNT */}
         <div className="w-full flex-1 mb-6 md:mb-0">
           <label
             className="block uppercase text-white text-xs font-bold mb-2"
@@ -133,7 +130,6 @@ const TransactionForm = () => {
         </div>
       </div>
 
-      {/* LOCATION */}
       <div className="flex flex-wrap gap-3">
         <div className="w-full flex-1 mb-6 md:mb-0">
           <label
@@ -151,7 +147,6 @@ const TransactionForm = () => {
           />
         </div>
 
-        {/* DATE */}
         <div className="w-full flex-1">
           <label
             className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
