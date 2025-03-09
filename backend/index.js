@@ -2,7 +2,7 @@ import express from "express";
 import http from "http";
 import cors from "cors";
 import dotenv from "dotenv";
-
+import path from "path";
 import passport from "passport";
 import session from "express-session";
 import connectMongo from "connect-mongodb-session";
@@ -19,9 +19,14 @@ import mergedTypeDefs from "./typeDefs/index.js";
 import { connectDB } from "./db/connectDB.js";
 import { configurePassport } from "./passport/passport.config.js";
 
+import job from "./cron.js";
+
 dotenv.config();
 configurePassport();
 
+job.start();
+
+const __dirname = path.resolve();
 const app = express();
 
 const httpServer = http.createServer(app);
@@ -66,12 +71,19 @@ app.use(
     credentials: true,
   }),
   express.json(),
+
   expressMiddleware(server, {
     context: async ({ req, res }) => buildContext({ req, res }),
   })
 );
 
+app.use(express.static(path.join(__dirname, "frontend/dist")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "frontend/dist", "index.html"));
+});
+
 await new Promise((resolve) => httpServer.listen({ port: 4000 }, resolve));
 await connectDB();
 
-console.log("🚀 Server ready at http://localhost:4000/");
+console.log(`🚀 Server ready at http://localhost:4000/graphql`);

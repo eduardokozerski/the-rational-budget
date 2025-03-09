@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
@@ -16,7 +16,7 @@ function App() {
 
   return (
     <>
-      {data.authUser && <Header />}
+      {data?.authUser && <Header />}
       <Routes>
         <Route
           path="/"
@@ -28,10 +28,10 @@ function App() {
         />
         <Route
           path="/signup"
-          element={data.authUser ? <SignUpPage /> : <Navigate to="/" />}
+          element={!data.authUser ? <SignUpPage /> : <Navigate to="/" />}
         />
         <Route
-          path="transaction/:id"
+          path="/transaction/:id"
           element={
             data.authUser ? <TransactionPage /> : <Navigate to="/login" />
           }

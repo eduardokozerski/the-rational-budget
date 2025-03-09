@@ -1,5 +1,5 @@
 import Transaction from "../models/transaction.model.js";
-import { User } from "../models/user.model.js";
+import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 
 const userResolver = {
@@ -7,6 +7,7 @@ const userResolver = {
     signUp: async (_, { input }, context) => {
       try {
         const { username, name, password, gender } = input;
+
         if (!username || !name || !password || !gender) {
           throw new Error("All fields are required");
         }
@@ -18,7 +19,6 @@ const userResolver = {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        // https://avatar-placeholder.iran.liara.run/300x300
         const boyProfilePic = `https://avatar.iran.liara.run/public/boy?username=${username}`;
         const girlProfilePic = `https://avatar.iran.liara.run/public/girl?username=${username}`;
 
@@ -34,7 +34,7 @@ const userResolver = {
         await context.login(newUser);
         return newUser;
       } catch (err) {
-        console.error("Error in signUp:", err);
+        console.error("Error in signUp: ", err);
         throw new Error(err.message || "Internal server error");
       }
     },
@@ -76,8 +76,8 @@ const userResolver = {
         const user = await context.getUser();
         return user;
       } catch (err) {
-        console.error("Error in authUser:", err);
-        throw new Error(err.message || "Internal server error");
+        console.error("Error in authUser: ", err);
+        throw new Error("Internal server error");
       }
     },
     user: async (_, { userId }) => {
@@ -94,8 +94,9 @@ const userResolver = {
     transactions: async (parent) => {
       try {
         const transactions = await Transaction.find({ userId: parent._id });
+        return transactions;
       } catch (err) {
-        console.log("Error in user.transactions resolver:", err);
+        console.log("Error in user.transactions resolver: ", err);
         throw new Error(err.message || "Internal server error");
       }
     },

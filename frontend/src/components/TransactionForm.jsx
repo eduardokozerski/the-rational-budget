@@ -3,7 +3,6 @@ import { CREATE_TRANSACTION } from "../graphql/mutations/transaction.mutation";
 import toast from "react-hot-toast";
 
 const TransactionForm = () => {
-  // TODO => WHEN RELATIONSHIPS ARE ADDED, CHANGE THE REFETCH QUERY
   const [createTransaction, { loading }] = useMutation(CREATE_TRANSACTION, {
     refetchQueries: ["GetTransactions", "GetTransactionStatistics"],
   });
@@ -21,11 +20,12 @@ const TransactionForm = () => {
       location: formData.get("location"),
       date: formData.get("date"),
     };
+
     try {
       await createTransaction({ variables: { input: transactionData } });
 
       form.reset();
-      toast.success("Transaction added successfully");
+      toast.success("Transaction created successfully");
     } catch (error) {
       toast.error(error.message);
     }
@@ -36,6 +36,7 @@ const TransactionForm = () => {
       className="w-full max-w-lg flex flex-col gap-5 px-3"
       onSubmit={handleSubmit}
     >
+      {/* TRANSACTION */}
       <div className="flex flex-wrap">
         <div className="w-full">
           <label
@@ -54,7 +55,7 @@ const TransactionForm = () => {
           />
         </div>
       </div>
-
+      {/* PAYMENT TYPE */}
       <div className="flex flex-wrap gap-3">
         <div className="w-full flex-1 mb-6 md:mb-0">
           <label
@@ -84,6 +85,7 @@ const TransactionForm = () => {
           </div>
         </div>
 
+        {/* CATEGORY */}
         <div className="w-full flex-1 mb-6 md:mb-0">
           <label
             className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
@@ -113,6 +115,7 @@ const TransactionForm = () => {
           </div>
         </div>
 
+        {/* AMOUNT */}
         <div className="w-full flex-1 mb-6 md:mb-0">
           <label
             className="block uppercase text-white text-xs font-bold mb-2"
@@ -130,6 +133,7 @@ const TransactionForm = () => {
         </div>
       </div>
 
+      {/* LOCATION */}
       <div className="flex flex-wrap gap-3">
         <div className="w-full flex-1 mb-6 md:mb-0">
           <label
@@ -147,6 +151,7 @@ const TransactionForm = () => {
           />
         </div>
 
+        {/* DATE */}
         <div className="w-full flex-1">
           <label
             className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
@@ -164,7 +169,7 @@ const TransactionForm = () => {
           />
         </div>
       </div>
-
+      {/* SUBMIT BUTTON */}
       <button
         className="text-white font-bold w-full rounded px-4 py-2 bg-gradient-to-br
           from-pink-500 to-pink-500 hover:from-pink-600 hover:to-pink-600
@@ -172,7 +177,7 @@ const TransactionForm = () => {
         type="submit"
         disabled={loading}
       >
-        {loading ? "Loading..." : "Add transaction"}
+        {loading ? "Loading..." : "Add Transaction"}
       </button>
     </form>
   );

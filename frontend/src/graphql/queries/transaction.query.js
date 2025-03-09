@@ -4,7 +4,7 @@ export const GET_TRANSACTIONS = gql`
   query GetTransactions {
     transactions {
       _id
-      descriptions
+      description
       paymentType
       category
       amount
@@ -18,7 +18,7 @@ export const GET_TRANSACTION = gql`
   query GetTransaction($id: ID!) {
     transaction(transactionId: $id) {
       _id
-      descriptions
+      description
       paymentType
       category
       amount

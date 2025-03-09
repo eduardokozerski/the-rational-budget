@@ -6,9 +6,8 @@ import TransactionForm from "../components/TransactionForm";
 
 import { MdLogout } from "react-icons/md";
 import toast from "react-hot-toast";
-
-import { LOGOUT } from "../graphql/mutations/user.mutation";
 import { useMutation, useQuery } from "@apollo/client";
+import { LOGOUT } from "../graphql/mutations/user.mutation";
 import { GET_TRANSACTION_STATISTICS } from "../graphql/queries/transaction.query";
 import { GET_AUTHENTICATED_USER } from "../graphql/queries/user.query";
 import { useEffect, useState } from "react";
@@ -45,19 +44,20 @@ const HomePage = () => {
       const totalAmounts = data.categoryStatistics.map(
         (stat) => stat.totalAmount
       );
+
       const backgroundColors = [];
       const borderColors = [];
 
       categories.forEach((category) => {
         if (category === "saving") {
-          backgroundColors.push("rgba (75, 192, 192)");
-          borderColors.push("rgba(75, 192 192)");
+          backgroundColors.push("rgba(75, 192, 192)");
+          borderColors.push("rgba(75, 192, 192)");
         } else if (category === "expense") {
-          backgroundColors.push("rgba (255, 99, 132)");
-          borderColors.push("rgba (255, 99, 132)");
+          backgroundColors.push("rgba(255, 99, 132)");
+          borderColors.push("rgba(255, 99, 132)");
         } else if (category === "investment") {
-          backgroundColors.push("rgba (54, 162, 235)");
-          borderColors.push("rgba (54, 162, 235)");
+          backgroundColors.push("rgba(54, 162, 235)");
+          borderColors.push("rgba(54, 162, 235)");
         }
       });
 
@@ -78,6 +78,8 @@ const HomePage = () => {
   const handleLogout = async () => {
     try {
       await logout();
+      // Clear the Apollo Client cache FROM THE DOCS
+      // https://www.apollographql.com/docs/react/caching/advanced-topics/#:~:text=Resetting%20the%20cache,any%20of%20your%20active%20queries
       client.resetStore();
     } catch (error) {
       console.error("Error logging out:", error);
@@ -103,7 +105,6 @@ const HomePage = () => {
               onClick={handleLogout}
             />
           )}
-
           {loading && (
             <div className="w-6 h-6 border-t-2 border-b-2 mx-2 rounded-full animate-spin"></div>
           )}
@@ -114,6 +115,7 @@ const HomePage = () => {
               <Doughnut data={chartData} />
             </div>
           )}
+
           <TransactionForm />
         </div>
         <Cards />

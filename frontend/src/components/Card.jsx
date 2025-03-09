@@ -5,15 +5,16 @@ import { FaSackDollar } from "react-icons/fa6";
 import { FaTrash } from "react-icons/fa";
 import { HiPencilAlt } from "react-icons/hi";
 import { Link } from "react-router-dom";
+import { formatDate } from "../utils/formatDate";
 import toast from "react-hot-toast";
 import { useMutation } from "@apollo/client";
 import { DELETE_TRANSACTION } from "../graphql/mutations/transaction.mutation";
-import { formatDate } from "../utils/formatDate";
 
 const categoryColorMap = {
   saving: "from-green-700 to-green-400",
   expense: "from-pink-800 to-pink-600",
   investment: "from-blue-700 to-blue-400",
+  // Add more categories and corresponding color classes as needed
 };
 
 const Card = ({ transaction, authUser }) => {
@@ -24,14 +25,18 @@ const Card = ({ transaction, authUser }) => {
     refetchQueries: ["GetTransactions", "GetTransactionStatistics"],
   });
 
+  // Capitalize the first letter of the description
   description = description[0]?.toUpperCase() + description.slice(1);
   category = category[0]?.toUpperCase() + category.slice(1);
   paymentType = paymentType[0]?.toUpperCase() + paymentType.slice(1);
+
   const formattedDate = formatDate(date);
 
   const handleDelete = async () => {
     try {
-      await deleteTransaction({ variables: { transaction: transaction._id } });
+      await deleteTransaction({
+        variables: { transactionId: transaction._id },
+      });
       toast.success("Transaction deleted successfully");
     } catch (error) {
       console.error("Error deleting transaction:", error);
@@ -49,7 +54,7 @@ const Card = ({ transaction, authUser }) => {
               <FaTrash className={"cursor-pointer"} onClick={handleDelete} />
             )}
             {loading && (
-              <div className="w-6 h-6 border-t-2 border-b-2 rounded-full animate-spin"></div>
+              <div className="w-6 h-6 border-t-2 border-b-2  rounded-full animate-spin"></div>
             )}
             <Link to={`/transaction/${transaction._id}`}>
               <HiPencilAlt className="cursor-pointer" size={20} />
